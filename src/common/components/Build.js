@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import BuildArea from './build/BuildArea';
-import BuildControls from './build/BuildControls';
-import backgrounds from '../utils/hex-backgrounds';
+import BuildArea from '../containers/build/BuildArea';
+import BuildControls from '../containers/build/BuildControls';
 import assets from '../utils/hex-assets'
 
 class Build extends Component {
@@ -13,8 +12,8 @@ class Build extends Component {
   render() {
     return (
         <div id="game">
-            <BuildArea backgrounds={backgrounds} assets={assets} />
-            <BuildControls backgrounds={backgrounds} assets={assets} selected={backgrounds[0]} />
+            <BuildArea />
+            <BuildControls />
         </div>
     );
   }

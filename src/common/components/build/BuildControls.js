@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { createBackgroundGrid, createMovementGrid, createAssetGrid} from '../../utils/hex-create';
+import backgrounds from '../../utils/hex-backgrounds';
+import assets from '../../utils/hex-assets';
 import _ from 'lodash';
 import classnames from 'classnames';
 
@@ -8,23 +10,27 @@ class GameArea extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            selected : this.props.selected,
-            area : 'backgrounds'
+            selected: this.props.selected || backgrounds[0],
+            area: 'backgrounds',
+            open: true
         }
         this.eventSelectBackground = this.eventSelectBackground.bind(this);
         this.eventSelectAsset = this.eventSelectAsset.bind(this);
         this.eventArea = this.eventArea.bind(this);
+        this.eventOpen = this.eventOpen.bind(this);
     }
 
     eventSelectBackground (e) {
-        const selected =  _.find(this.props.backgrounds,{ id : e.target.id})
+        const selected =  _.find(backgrounds,{ id : e.target.id});
+        this.props.addSelected(_.merge(selected,{type:'backgrounds'}));
         this.setState({
             selected : selected
         })
     }
 
     eventSelectAsset (e) {
-        const selected =  _.find(this.props.assets,{ id : e.target.id})
+        const selected =  _.find(assets,{ id : e.target.id});
+        this.props.addSelected(_.merge(selected,{type:'assets'}));
         this.setState({
             selected : selected
         })
@@ -32,16 +38,26 @@ class GameArea extends Component {
 
     eventArea (e) {
         const area = e.target.innerText.toLowerCase();
-        const selected = (area === 'backgrounds') ? this.props.backgrounds[0] : this.props.assets[0];
+        const selected = (area === 'backgrounds') ? backgrounds[0] : assets[0];
         this.setState({
             area : area,
             selected : selected
         });
     }
 
+    eventOpen (e) {
+        const text = e.target.innerText.toLowerCase();
+        const value = (text === 'open') ? true : false;
+        this.setState({
+            open : value
+        });
+    }
+
     render() {
 
-        const Backgrounds = this.props.backgrounds.map((item,i) => {
+        const openClass = (this.state.open) ? 'controls' : 'controls hide';
+
+        const Backgrounds = backgrounds.map((item,i) => {
             const cname = (item.id === this.state.selected.id) ? 'selected' : '';
             return (
                 <li key={i} className={cname}>
@@ -60,35 +76,43 @@ class GameArea extends Component {
             )
         });
 
-        const Assets = this.props.assets.map((item,i) => {
+        const Assets = assets.map((item,i) => {
             const cname = (item.id === this.state.selected.id) ? 'selected' : '';
             return (
                 <li key={i} className={cname}>
-                    <div className="tile">
+                    <div className="tile-asset">
                         <div onClick={this.eventSelectAsset} id={item.id} className={item.id}></div>
                     </div>
-                    <h4>{item.name}</h4>
-                    <p>
-                        m : {item.movement} a : {item.attack} d : {item.defence}
-                    </p>
+                    <div className="info">
+                        <h4>{item.name}</h4>
+                        <p>
+                            m : {item.movement} a : {item.attack} d : {item.defend}
+                        </p>
+                    </div>
                 </li>
             )
         });
 
         return (
-            <div className="controls">
+            <div className={openClass}>
                 <ul className={this.state.area}>
                     <li onClick={this.eventArea}>Backgrounds</li>
-                    <li onClick={this.eventArea}>Assets</li>
+                    <li onClick={this.eventArea}>T-Assets</li>
                 </ul>
                 <ul className="tile-list">
                 {this.state.area === 'backgrounds' &&
                     {Backgrounds}
                 }
-                {this.state.area === 'assets' &&
+                {this.state.area === 't-assets' &&
                     {Assets}
                 }
                 </ul>
+                {this.state.open &&
+                    <div onClick={this.eventOpen} className="controls-tab">Close</div>
+                }
+                {!this.state.open &&
+                    <div onClick={this.eventOpen} className="controls-tab">Open</div>
+                }
             </div>
         );
 

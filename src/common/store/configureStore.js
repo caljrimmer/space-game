@@ -4,13 +4,12 @@ import { reduxReactRouter } from 'redux-router';
 import thunk from 'redux-thunk';
 import createHistory from 'history/lib/createBrowserHistory';
 import createLogger from 'redux-logger';
-import promiseMiddleware from '../api/promiseMiddleware';
 import rootReducer from '../reducers';
 
 const middlewareBuilder = () => {
 
   let middleware = {};
-  let universalMiddleware = [thunk,promiseMiddleware];
+  let universalMiddleware = [thunk];
   let allComposeElements = [];
   
   if(process.browser){
@@ -28,8 +27,8 @@ const middlewareBuilder = () => {
         middleware,
         reduxReactRouter({
           createHistory
-        }),
-        devTools()
+        })
+        //devTools()
       ]
     }
   }else{

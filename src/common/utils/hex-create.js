@@ -4,174 +4,238 @@ import { spaceData, spaceProjection } from './hex-data';
 import backgrounds from './hex-backgrounds';
 import assets from './hex-assets';
 
-var border;
-var space;
-var isBuilder;
-var data;
-var path;
-var projection;
+class Grid {
 
-function tileSelect (d) {
-    d.fill = true;
-    if (!d.tile) {
-        d.tile = backgrounds[0];
+    constructor(opt, props) {
+        this.space = {};
+        this.target = opt.target;
+        this.width = opt.width;
+        this.height = opt.height;
+        this.radius = opt.radius;
+        this.props = props;
+        this.data = spaceData(this.radius, this.width, this.height);
+        this.projection = spaceProjection(this.radius);
+        this.path = d3.geo.path().projection(this.projection);
     }
-    if (d.tile.index === backgrounds.length) {
-        d.tile = null;
-        d.fill = false;
-    } else {
-        d.tile = backgrounds[d.tile.index];
+
+    indexByID(d) {
+        return d.id;
     }
-    return d;
-}
 
-function assetSelect (d) {
-    return d;
-}
+    /**
+    * Assets
+    */
 
-function createAssets (target) {
-    const mappedAssets = data.objects.hexagons.geometries.filter((item) => {
-        return _.has(item,'asset');
-    });
+    mapAssets(data) {
+        return data.filter((item) => {
+            return _.has(item,'asset');
+        });
+    }
 
-    d3.select(target)
-        .append("div")
-        .attr("class","assets")
-        .selectAll("div")
-        .data(mappedAssets)
-        .enter().append("div")
-        .attr("class",function (d) {
-            return d.asset.id;
-        })
-        .attr("data-offset",function(d) {
-            return d.offset;
-        })
-        .attr("style",function(d) {
-            var dx = 22 * 2 * Math.sin(Math.PI / 3) * (d.offset[0] - 1),
-                dy = 22 * 1.5 * (d.offset[1] - 2);
-            if(d.offset[1] % 2 !== 0){
+    createAssets (data) {
+        const d3Element = d3.select(this.target)
+            .append("div")
+            .attr("class","assets")
+            .selectAll("div")
+            .data(data,this.indexByID);
+        this.updateAssets(d3Element);
+    }
+
+    updateAssets (d3Element) {
+
+        function offsetToPixel (x,y) {
+            var dx = 22 * 2 * Math.sin(Math.PI / 3) * (x - 1),
+                    dy = 22 * 1.5 * (y - 2);
+            if(y % 2 !== 0){
                 dx = dx - (22 * Math.sin(Math.PI / 3));
             }
-            return "top:" + dy + "px;left:" + dx + "px; transform : rotate(" + d.asset.rotate + "deg)";
-        });
-}
+            return {
+                dx : dx,
+                dy : dy
+            };
+        }
 
-function createBackground () {
-    space.append("g")
-        .attr("class", "hexagon")
-        .selectAll("path")
-        .data(data.objects.hexagons.geometries)
-        .enter().append("path")
-        .attr("d", function(d) { 
-            return path(topojson.feature(data, d));
-        })
-        .attr("class", function(d) {
-            if (d.offset[1] < 2 || d.offset[0] === 0 || d.offset[1] === 24 || d.offset[0] >= 26) {
-                return 'out-of-bounds';
-            } else{
-                return d.tile ? d.tile.id : null;
+        function transformRotate (rotate,id) {
+            if (id.indexOf('ship') === -1) {
+                rotate = 0;
             }
-        })
-        .attr("data-id", function(d) {
-            return d.id;
-        })
-        .attr("data-offset", function(d) {
-            return d.offset;
-        })
-        .on("mousedown", mousedown)
-}
+            return rotate;
+        }
 
-function createMesh () {
-    space.append("path")
-        .datum(topojson.mesh(data, data.objects.hexagons))
-        .attr("class", "mesh")
-        .attr("d", path);
-}
+        d3Element
+            .enter().append("div")
+            .attr("class",function (d) {
+                return d.asset.id;
+            })
+            .attr("data-offset",function(d) {
+                return d.offset;
+            });
 
-function createBorder () {
-    border = space.append("path")
-        .attr("class", "border")
-        .call(redraw);
-}
-
-function redraw(border) {
-    border.attr("d", path(
-        topojson.mesh(
-            data,
-            data.objects.hexagons,
-            function(a, b) {
-                return a.fill ^ b.fill;
-            }
-        )
-    ));
-}
-
-function mousedown(d) {
-    if (isBuilder) {
-        d = tileSelect(d);
-        d3.select(this).attr("class", function(d) {
-            return d.tile ? d.tile.id : null;
+        d3Element.attr("style",function(d) {
+            var pos = offsetToPixel(d.offset[0], d.offset[1]);
+            var rotate = transformRotate(d.rotate, d.asset.id);
+            return "top:" + pos.dy + "px;left:" + pos.dx + "px; transform : rotate(" + rotate + "deg)";
         });
-        border.call(redraw);
-    } else{
-        d = assetSelect(d);
-        console.log(d);
+
+        // EXIT
+        d3Element.exit().remove();
     }
-}
 
-function zoomed() {
-    space.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
-}
+    /**
+    * Backgrounds
+    */
 
-function createZoomRect (width, height, zoom) {
+    mapBackgrounds (data) {
+        return data.filter((item) => {
+            return _.has(item,'tile');
+        });
+    }
 
-    var zoom = d3.behavior.zoom()
-        .translate([0, 0])
-        .scale(1)
-        .scaleExtent([1, 8])
-        .on("zoom", zoomed);
+    updateBackground (d3Element, data) {
 
-    space.append("rect")
-        .attr("class", "overlay")
-        .attr("width", width)
-        .attr("height", height)
-        .call(zoom);
-}
+        if(!data) return;
 
-export function createGrid (opts) {
+        const self = this;
 
-    const width = opts.width,
-        height = opts.height,
-        radius = opts.radius,
-        target = opts.target;
+        return d3Element
+            .attr("d", (d) => { 
+                return self.path(topojson.feature(data, d));
+            })
+            .attr("class", (d) => {
+                if (d.offset[1] < 2 || d.offset[0] === 0 || d.offset[1] === 24 || d.offset[0] >= 26) {
+                    return 'out-of-bounds';
+                } else{
+                    return d.tile ? d.tile.id : '';
+                }
+            })
+            .attr("data-id", (d) => {
+                return d.id;
+            })
+            .attr("data-offset", (d) => {
+                return d.offset;
+            })
+            .on("mousedown", this.leftClick.bind(this))
+            .on('contextmenu', this.rightClick.bind(this));
+    }
 
-    isBuilder = opts.isBuilder;
-    data = spaceData(radius, width, height);
-    projection = spaceProjection(radius);
-    path = d3.geo.path().projection(projection);
+    createBackground (data) {
+        var d3Element = this.space.append("g")
+            .attr("class", "hexagon")
+            .selectAll("path")
+            .data(data.objects.hexagons.geometries,this.indexByID)
+            .enter().append("path");
+        this.updateBackground(d3Element, data);
+    }
 
-    var svg = d3.select(target).append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    /**
+    * Ancillary Rendering
+    */
 
-    space = svg.append("g")
-        .attr("class","space")
-        .attr("width", width)
-        .attr("height", height);
+    createMesh (data) {
+        this.space.append("path")
+            .datum(topojson.mesh(data, data.objects.hexagons))
+            .attr("class", "mesh")
+            .attr("d", this.path);
+    }
 
-    //Backgrounds of space
-    createBackground();
+    createZoomRect (width, height) {
+        const zoom = d3.behavior.zoom()
+            .translate([0, 0])
+            .scale(1)
+            .scaleExtent([1, 8])
+            .on("zoom", this.zoomed);
+        this.space.append("rect")
+            .attr("class", "overlay")
+            .attr("width", width)
+            .attr("height", height)
+            .call(zoom);
+    }
+
+    zoomed() {
+        this.space.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+    }
+
+    /**
+    * Binding
+    */
+
+    assetManipulation (d,asset) {
+        if(_.has(d,'asset')){
+            d.rotate = ((d.rotate + 60) > 360) ? 30 : d.rotate + 60;
+        } else {
+            d.asset = asset;
+            d.rotate = 30;
+        }
+        return d;
+    }
+
+    backgroundManipulation (d,background) {
+        d.tile = background;
+        return d;
+    }
+
+    leftClick(d) {
+        d3.event.preventDefault();
+        if(this.props.selected.type === 'assets') {
+            d = this.assetManipulation(d,this.props.selected);
+        }
+        if(this.props.selected.type === 'backgrounds') {
+            d = this.backgroundManipulation(d,this.props.selected);
+        }
+        this.update(d);
+    }
+
+    rightClick(d) {
+        d3.event.preventDefault();
+        delete d.tile;
+        delete d.asset;
+        this.update(d);
+    }
+
+    update (d) {
+        const newData = this.data.objects.hexagons.geometries.map((item) => {
+            if (item.id === d.id) {
+                return d;
+            }
+            return item;
+        });
+
+        const d3BackgroundElement = d3.select('.hexagon').selectAll('path').data(this.mapBackgrounds(newData),this.indexByID);
+        this.updateBackground(d3BackgroundElement,this.data);
+
+        const d3AssetElement = d3.select('.assets').selectAll('div').data(this.mapAssets(newData),this.indexByID);
+        this.updateAssets(d3AssetElement);
+    }
+
+    updateSelected (props) {
+        this.props = props;
+    };
+
+    createGrid () {
+
+        var svg = d3.select(this.target).append("svg")
+            .attr("width", this.width)
+            .attr("height", this.height);
+
+        this.space = svg.append("g")
+            .attr("class","space")
+            .attr("width", this.width)
+            .attr("height", this.height);
+
+        //Backgrounds of space
+        this.createBackground(this.data);
 
         //Assets of space
-    createAssets(target);
+        this.createAssets(this.mapAssets(this.data.objects.hexagons.geometries));
 
-    //Mesh of space
-    createMesh();
+        //Mesh of space
+        this.createMesh(this.data);
 
-    //Border around tiles of space
-    createBorder();
+        //Zoom Area
+        //createZoomRect(width, height);
 
-    //Zoom Area
-    //createZoomRect(width, height);
+    }
 
 }
+
+export default Grid;

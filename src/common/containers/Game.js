@@ -2,16 +2,15 @@ import { bindActionCreators } from 'redux';
 import React, { Component} from 'react';
 import { connect } from 'react-redux';
 import Game from '../components/Game';
-import * as LayoutActions from '../actions/layout';
+
+import * as BuildActions from '../actions/buildActions';
 
 function mapStateToProps(state) {
-  return {
-    layout : state.layout
-  }
+  return {}
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(LayoutActions, dispatch);
+  return bindActionCreators(BuildActions, dispatch);
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Game);

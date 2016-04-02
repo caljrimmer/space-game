@@ -1,4 +1,4 @@
-const tiles = [
+const backgrounds = [
     {
         name: 'Cloud 1',
         id: 'cloud_1',
@@ -36,21 +36,21 @@ const tiles = [
         index: 6
     },
     {
-        name: 'Star Yellow',
+        name: 'Star Major',
         id: 'star_1',
         movement: 0,
         spawn: 0.5,
         index: 7
     },
     {
-        name: 'Star Blue',
+        name: 'Star Median',
         id: 'star_2',
         spawn: 1,
         movement : 1,
         index: 8
     },
     {
-        name: 'Star Red',
+        name: 'Star Minor',
         id: 'star_3',
         spawn: 2,
         movement : 1,
@@ -76,4 +76,4 @@ const tiles = [
     }
 ]
 
-export default tiles;
+export default backgrounds;

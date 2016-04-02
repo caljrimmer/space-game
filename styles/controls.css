@@ -1,20 +1,33 @@
 .controls {
-    width: 160px;
-    float: right;
-    background:#000;
-    position:absolute;
-    right:0;
-    opacity:0.5;
+    width: 237px;
+    background: #000;
+    opacity: 0.5;
+    position: absolute;
+    right: -15px;
+    top: 30px;
+    height: 500px;
+    overflow: hidden;
+}
+
+.controls:hover {
+    opacity:1;
 }
 
 .controls ul {
     list-style:none;
     margin:0;
     padding:0;
+    width:200px;
+    float:right;
 }
 
 .controls ul li {
     font-size:11px;
+}
+
+.tile-list {
+    height:calc(100% - 40px);
+    overflow-y: scroll;
 }
 
 .tile-list li {
@@ -25,6 +38,7 @@
     border: 1px solid #1D1D1D;
     padding: 8px;
     color:rgba(255,255,255,0.8);
+    position:relative;
 }
 
 .tile-list li:hover {
@@ -41,7 +55,19 @@
     width: 30px;
     height: 30px;
     float: left;
-    margin: -3px;
+    margin: -3px 3px -3px;
+}
+
+.tile-list .tile svg {
+    width:40px;
+    height:40px;
+}
+
+.tile-list .tile-asset {
+    width: 30px;
+    height: 30px;
+    float: left;
+    margin: 3px;
 }
 
 .tile-list .info{
@@ -62,16 +88,17 @@
 }
 
 .backgrounds li,
-.assets li {
+.t-assets li {
     color:#fff;
     width:50%;
     float:left;
     text-align:center;
     line-height:30px;
+    font-weight:bold;
 }
 
 .backgrounds li:hover,
-.assets li:hover {
+.t-assets li:hover {
     text-decoration:underline;
     cursor:pointer;
 }
@@ -81,7 +108,35 @@
     color:#000;
 }
 
-.assets li:nth-child(2) {
+.t-assets li:nth-child(2) {
     background: yellow;
     color:#000;
+}
+
+.controls-tab {
+    position: absolute;
+    left: -45px;
+    top: 200px;
+    background: #000;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 50px 10px;
+    transform: rotate(-90deg);
+}
+
+.controls-tab:hover {
+    color:yellow;
+    cursor:pointer;
+}
+
+.hide.controls ul {
+    display:none;
+}
+
+.hide.controls {
+    width:40px;
+}
+
+.hide.controls .controls-tab {
+    border:1px solid #fff;
 }

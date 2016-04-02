@@ -3,20 +3,33 @@
     height: 743px;
     position: absolute;
     top: 20px;
-    left: 3px;
+    left: 41px;
     pointer-events: none;
 }
 
-.ship_war {
+/**
+* Red
+*/
+
+.ship_war_red {
     background:url(assets/playerShip3_red.png) no-repeat;
-     background-size:32px 24px;
+    background-size:32px 24px;
     width:32px;
     height:24px;
     background-position: center;
     position:absolute;
 }
 
-.ship_scout {
+.ship_scout_red {
+    background:url(assets/playerShip2_red.png) no-repeat;
+    background-size:20px 15px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_gun_red {
     background:url(assets/playerShip1_red.png) no-repeat;
     background-size:28px 21px;
     width:32px;
@@ -25,14 +38,138 @@
     position:absolute;
 }
 
-.ship_gun {
-    background:url(assets/playerShip2_red.png) no-repeat;
+.base_red{
+    background:url(assets/base_red.png) no-repeat;
+    background-size:26px 26px;
+    width:32px;
+    height:32px;
+    background-position: 3px 0px;
+    position:absolute;
+}
+
+/**
+* Blue
+*/
+
+.ship_war_blue {
+    background:url(assets/playerShip3_blue.png) no-repeat;
+    background-size:32px 24px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_scout_blue {
+    background:url(assets/playerShip2_blue.png) no-repeat;
     background-size:20px 15px;
     width:32px;
     height:24px;
     background-position: center;
     position:absolute;
 }
+
+.ship_gun_blue{
+    background:url(assets/playerShip1_blue.png) no-repeat;
+    background-size:28px 21px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.base_blue{
+    background:url(assets/base_blue.png) no-repeat;
+    background-size:26px 26px;
+    width:32px;
+    height:32px;
+    background-position: 3px 0px;
+    position:absolute;
+}
+
+/**
+* Green
+*/
+
+.ship_war_green {
+    background:url(assets/playerShip3_green.png) no-repeat;
+    background-size:32px 24px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_scout_green {
+    background:url(assets/playerShip2_green.png) no-repeat;
+    background-size:20px 15px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_gun_green{
+    background:url(assets/playerShip1_green.png) no-repeat;
+    background-size:28px 21px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.base_green{
+    background:url(assets/base_green.png) no-repeat;
+    background-size:26px 26px;
+    width:32px;
+    height:32px;
+    background-position: 3px 0px;
+    position:absolute;
+}
+
+/**
+* Orange
+*/
+
+.ship_war_orange {
+    background:url(assets/playerShip3_orange.png) no-repeat;
+    background-size:32px 24px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_scout_orange {
+    background:url(assets/playerShip2_orange.png) no-repeat;
+    background-size:20px 15px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.ship_gun_orange{
+    background:url(assets/playerShip1_orange.png) no-repeat;
+    background-size:28px 21px;
+    width:32px;
+    height:24px;
+    background-position: center;
+    position:absolute;
+}
+
+.base_orange{
+    background:url(assets/base_orange.png) no-repeat;
+    background-size:26px 26px;
+    width:32px;
+    height:32px;
+    background-position: 3px 0px;
+    position:absolute;
+}
+
+/**
+* Rotation
+*/
 
 .deg30 {
     transform : rotate(30deg)

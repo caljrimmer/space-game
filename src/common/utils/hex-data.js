@@ -40,30 +40,6 @@ export function spaceData(radius, width, height) {
                 id: index,
                 offset: [i,j]
             };
-
-            const random = randomAssets();
-
-            /*
-            if (j === 2 && i === 2) {
-                random.id = "ship_gun";
-                obj.asset = random;
-            }
-
-            if (j === 3 && i === 3) {
-                random.id = "ship_scout";
-                obj.asset = random;
-            }
-
-            if (j === 4 && i === 4) {
-                random.id = "ship_war";
-                obj.asset = random;
-            }*/
-
-            if(random) {
-                obj.asset = random;
-            }
-
-
             geometries.push(obj);
             index++;
         }
