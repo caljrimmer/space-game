@@ -2,15 +2,15 @@ import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
 
 //Build reducer
-import assets from './build/assets';
+import game from './build/game';
+import games from './build/games';
 import selected from './build/selected';
-import backgrounds from './build/backgrounds';
 
 const rootReducer = combineReducers({
     router: routerStateReducer,
-    assets: assets,
-    selected: selected,
-    backgrounds: backgrounds
+    games: games,
+    game: game,
+    selected: selected
 });
 
 export default rootReducer;

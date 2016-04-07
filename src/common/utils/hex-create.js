@@ -138,7 +138,7 @@ class Grid {
             .attr("d", this.path);
     }
 
-    createZoomRect (width, height) {
+    createZoomRect () {
         const zoom = d3.behavior.zoom()
             .translate([0, 0])
             .scale(1)
@@ -146,9 +146,9 @@ class Grid {
             .on("zoom", this.zoomed);
         this.space.append("rect")
             .attr("class", "overlay")
-            .attr("width", width)
-            .attr("height", height)
-            .call(zoom);
+            .attr("width", this.width)
+            .attr("height", this.height)
+            .call(this.zoom);
     }
 
     zoomed() {
@@ -232,7 +232,7 @@ class Grid {
         this.createMesh(this.data);
 
         //Zoom Area
-        //createZoomRect(width, height);
+        //createZoomRect();
 
     }
 

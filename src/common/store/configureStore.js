@@ -5,11 +5,12 @@ import thunk from 'redux-thunk';
 import createHistory from 'history/lib/createBrowserHistory';
 import createLogger from 'redux-logger';
 import rootReducer from '../reducers';
+import lowDBMiddleWare from '../api/lowDBMiddleWare';
 
 const middlewareBuilder = () => {
 
   let middleware = {};
-  let universalMiddleware = [thunk];
+  let universalMiddleware = [thunk,lowDBMiddleWare];
   let allComposeElements = [];
   
   if(process.browser){

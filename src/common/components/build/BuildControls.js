@@ -10,7 +10,7 @@ class GameArea extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            selected: this.props.selected || backgrounds[0],
+            selected: backgrounds[0],
             area: 'backgrounds',
             open: true
         }
@@ -98,6 +98,7 @@ class GameArea extends Component {
                 <ul className={this.state.area}>
                     <li onClick={this.eventArea}>Backgrounds</li>
                     <li onClick={this.eventArea}>T-Assets</li>
+                    <li onClick={this.eventArea}>Games</li>
                 </ul>
                 <ul className="tile-list">
                 {this.state.area === 'backgrounds' &&
@@ -105,6 +106,13 @@ class GameArea extends Component {
                 }
                 {this.state.area === 't-assets' &&
                     {Assets}
+                }
+                {this.state.area === 'games' &&
+                    <li><div>
+                        <input type="text" id="title" />
+                        <textarea id="desc"></textarea>
+                        <button className="save">Save</button>
+                    </div></li>
                 }
                 </ul>
                 {this.state.open &&

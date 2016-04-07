@@ -1,8 +1,8 @@
-export const SELECTED_POST= 'SELECTED_POST';
+export const SELECTED= 'SELECTED';
 
 export function addSelected(value) {
   return {
-    type: SELECTED_POST,
+    type: SELECTED,
     value : value
   };
 }

@@ -1,9 +1,9 @@
 .controls {
-    width: 237px;
+    width: 300px;
     background: #000;
     opacity: 0.5;
     position: absolute;
-    right: -15px;
+    right:0;
     top: 30px;
     height: 500px;
     overflow: hidden;
@@ -17,7 +17,7 @@
     list-style:none;
     margin:0;
     padding:0;
-    width:200px;
+    width:260px;
     float:right;
 }
 
@@ -88,17 +88,20 @@
 }
 
 .backgrounds li,
-.t-assets li {
+.t-assets li,
+.games li {
     color:#fff;
-    width:50%;
+    width:33%;
     float:left;
     text-align:center;
     line-height:30px;
     font-weight:bold;
+    font-size:10px;
 }
 
 .backgrounds li:hover,
-.t-assets li:hover {
+.t-assets li:hover,
+.games li:hover {
     text-decoration:underline;
     cursor:pointer;
 }
@@ -109,6 +112,11 @@
 }
 
 .t-assets li:nth-child(2) {
+    background: yellow;
+    color:#000;
+}
+
+.games li:nth-child(3) {
     background: yellow;
     color:#000;
 }
@@ -139,4 +147,15 @@
 
 .hide.controls .controls-tab {
     border:1px solid #fff;
+}
+
+.controls input,
+.controls textarea {
+    width: 100%;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+
+.controls textarea {
+    height:140px;
 }
