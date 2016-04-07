@@ -1,12 +1,11 @@
 const low = require('lowdb');
-const storage = ('lowdb/browser');
-const db = low('../../db/db.json', { storage });
+const storage = ('lowdb/file-sync');
+const db = low('db.json', { storage });
 
 export default function lowDBMiddleware() {
     return next => action => {
         const { value, type, store } = action;
         if (store) {
-
             if (type.includes('_PUT')) {
                 //PUT
                 db(store)
@@ -27,9 +26,7 @@ export default function lowDBMiddleware() {
             } else {
                 action.value = db(store).cloneDeep();
             }
-
             action.value = db(store).cloneDeep();
-
         }
         return next(action);
     }

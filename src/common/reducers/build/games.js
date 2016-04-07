@@ -1,9 +1,9 @@
 import {
-  GAME_POST,
-  GAME_GET,
-  GAME_GET_ID,
-  GAME_PUT,
-  GAME_DELETE
+  GAMES_POST,
+  GAMES_GET,
+  GAMES_GET_ID,
+  GAMES_PUT,
+  GAMES_DELETE
 } from '../../actions/build/games';
 
 export default function games(state = {
@@ -11,14 +11,11 @@ export default function games(state = {
     games : []
 }, action) {
     switch (action.type) {
-        case GAME_GET_ID:
-            return Object.assign({}, state, {
-                selected: action.value
-            }); 
-        case GAME_GET:
-        case GAME_POST:
-        case GAME_DELETE:
-        case GAME_PUT:
+        case GAMES_GET_ID:
+        case GAMES_GET:
+        case GAMES_POST:
+        case GAMES_DELETE:
+        case GAMES_PUT:
             return Object.assign({}, state, {
                 games: action.value
             });

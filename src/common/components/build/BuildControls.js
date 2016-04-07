@@ -14,10 +14,14 @@ class GameArea extends Component {
             area: 'backgrounds',
             open: true
         }
+        console.log(this.props)
         this.eventSelectBackground = this.eventSelectBackground.bind(this);
         this.eventSelectAsset = this.eventSelectAsset.bind(this);
         this.eventArea = this.eventArea.bind(this);
         this.eventOpen = this.eventOpen.bind(this);
+        this.eventAddGame = this.eventAddGame.bind(this);
+        this.eventDeleteGame = this.eventDeleteGame.bind(this);
+        this.eventSyncGame = this.eventSyncGame.bind(this);
     }
 
     eventSelectBackground (e) {
@@ -51,6 +55,33 @@ class GameArea extends Component {
         this.setState({
             open : value
         });
+    }
+
+    eventAddGame (e) {
+        const payload = {
+            title : this.refs.title.getDOMNode().value,
+            desc : this.refs.desc.getDOMNode().value,
+            size : 20
+        }
+        this.props.addGame(payload)
+    }
+
+    eventSyncGame (e) {
+        const payload = {
+            title : this.refs.title.getDOMNode().value,
+            desc : this.refs.desc.getDOMNode().value,
+            size : 20
+        }
+        this.props.updateGame(payload);
+        if (_.find(this.props.games.games,['id', this.props.game.id])) {
+            this.props.updateGames(this.props.game);
+        } else {
+            this.props.addGames(this.props.game);
+        }
+    }
+
+    eventDeleteGame (e) {
+        this.props.deleteGame();
     }
 
     render() {
@@ -108,11 +139,21 @@ class GameArea extends Component {
                     {Assets}
                 }
                 {this.state.area === 'games' &&
-                    <li><div>
-                        <input type="text" id="title" />
-                        <textarea id="desc"></textarea>
-                        <button className="save">Save</button>
-                    </div></li>
+                    <li>
+                        <div>
+                            <input type="text" ref="title" placeholder="Game Title" defaultValue={this.props.game.meta.title}/>
+                            <textarea ref="desc" placeholder="Game Desc">{this.props.game.meta.desc}</textarea>
+                            {this.props.game.id === '' &&
+                                <button className="save" onClick={this.eventAddGame}>Add</button>
+                            }
+                            {this.props.game.id !== '' &&
+                                <div>
+                                    <button className="sync" onClick={this.eventSyncGame}>Sync</button>
+                                    <button className="delete" onClick={this.eventDeleteGame}>Delete</button>
+                                </div>
+                            }
+                        </div>
+                    </li>
                 }
                 </ul>
                 {this.state.open &&

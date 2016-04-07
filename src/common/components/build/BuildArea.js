@@ -9,7 +9,16 @@ class BuildArea extends Component {
     }
 
     componentWillReceiveProps (nextProps) {
-        this.grid.updateSelected(nextProps)
+        if(nextProps.selected !== this.props.selected) {
+            this.grid.updateSelected(nextProps);
+        }
+    }
+
+    shouldComponentUpdate (nextProps) {
+        if ((nextProps.game.id !== this.props.game.id) && nextProps.game.id === '') {
+            this.grid.cleanGrid();  
+        }
+        return false;
     }
 
     componentDidMount () {
@@ -30,7 +39,6 @@ class BuildArea extends Component {
     }
 
     render() {
-
         return (
             <div id="grid" className="layers"></div>
         );

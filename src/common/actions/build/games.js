@@ -1,8 +1,8 @@
-export const GAMES_POST= 'GAME_POST';
+export const GAMES_POST= 'GAMES_POST';
 export const GAMES_GET= 'GAMES_GET';
-export const GAMES_GET_ID= 'GAME_GET_ID';
-export const GAMES_PUT= 'GAME_PUT';
-export const GAMES_DELETE= 'GAME_DELETE';
+export const GAMES_GET_ID= 'GAMES_GET_ID';
+export const GAMES_PUT= 'GAMES_PUT';
+export const GAMES_DELETE= 'GAMES_DELETE';
 
 export function fetchGames(value) {
   return {
@@ -20,7 +20,7 @@ export function fetchGame(value) {
   };
 }
 
-export function addGame(value) {
+export function addGames(value) {
   return {
     type: GAMES_POST,
     store : 'games',
@@ -28,7 +28,7 @@ export function addGame(value) {
   };
 }
 
-export function updateGame(value) {
+export function updateGames(value) {
   return {
     type: GAMES_PUT,
     store : 'games',
@@ -36,7 +36,7 @@ export function updateGame(value) {
   };
 }
 
-export function deleteGame(value) {
+export function deleteGames(value) {
   return {
     type: GAMES_DELETE,
     store : 'games',

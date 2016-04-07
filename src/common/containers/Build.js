@@ -6,8 +6,8 @@ import * as BuildActions from '../actions/buildActions';
 
 function mapStateToProps(state) {
     return {
-        assets : state.assets,
-        backgrounds : state.backgrounds,
+        games : state.games,
+        game : state.game,
         selected : state.selected
     }
 }

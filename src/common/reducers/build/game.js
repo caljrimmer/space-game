@@ -33,12 +33,18 @@ import {
 
 import uuid from 'uuid';
 
-export default function game(state = {
+const defaultGame = {
     id: '',
-    meta: {},
+    meta: {
+        size: 0,
+        title: '',
+        desc: ''
+    },
     assets: [],
     backgrounds: []
-}, action) {
+};
+
+export default function game(state = defaultGame, action) {
     switch (action.type) {
 
         case GAME_POST:
@@ -51,9 +57,7 @@ export default function game(state = {
                 }
             });
         case GAME_DELETE:
-            return Object.assign({}, state, {
-                meta: {}
-            });
+            return Object.assign({}, state, defaultGame);
         case GAME_PUT:
             return Object.assign({}, state, {
                 meta: {
@@ -64,20 +68,19 @@ export default function game(state = {
             });
 
         case ASSET_POST:
-            action.value.id = uuid.v1();
             const newAssets = state.assets.concat(action.value);
             return Object.assign({}, state, {
                 assets: newAssets
             });
         case ASSET_DELETE:
-            const deleteAssets = _.remove(state.assets,{id : action.value});
+            const deleteAssets = _.reject(state.assets,{offset : action.value.offset});
             return Object.assign({}, state, {
                 assets: deleteAssets
             });
         case ASSET_PUT:
-            const updatedAssets = _.map(state, (item) => {
-                if (item.id !== action.value.id) {
-                    action.value
+            const updatedAssets = _.map(state.assets, (item) => {
+                if (item.offset === action.value.offset) {
+                    return action.value
                 }
                 return item;
             });
@@ -86,20 +89,19 @@ export default function game(state = {
             });
 
         case BACKGROUND_POST:
-            action.value.id = uuid.v1();
-            const newBackgrounds = state.assets.concat(action.value);
+            const newBackgrounds = state.backgrounds.concat(action.value);
             return Object.assign({}, state, {
                 backgrounds: newBackgrounds
             });
         case BACKGROUND_DELETE:
-            const deleteupdatedBackgrounds = _.remove(state.assets,{id : action.value});
+            const deleteBackgrounds = _.reject(state.backgrounds,{offset : action.value.offset});
             return Object.assign({}, state, {
                 backgrounds: deleteBackgrounds
             });
         case BACKGROUND_PUT:
-            const updatedBackgrounds = _.map(state, (item) => {
-                if (item.id !== action.value.id) {
-                    action.value
+            const updatedBackgrounds = _.map(state.backgrounds, (item) => {
+                if (item.offset === action.value.offset) {
+                    return action.value
                 }
                 return item;
             });

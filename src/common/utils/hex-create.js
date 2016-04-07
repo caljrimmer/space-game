@@ -162,14 +162,35 @@ class Grid {
     assetManipulation (d,asset) {
         if(_.has(d,'asset')){
             d.rotate = ((d.rotate + 60) > 360) ? 30 : d.rotate + 60;
+            this.props.updateAsset({
+                class: asset.id,
+                offset: d.offset, 
+                rotate: d.rotate
+            });
         } else {
             d.asset = asset;
             d.rotate = 30;
+            this.props.addAsset({
+                class: asset.id,
+                offset: d.offset, 
+                rotate: d.rotate
+            });
         }
         return d;
     }
 
     backgroundManipulation (d,background) {
+        if(!d.tile){
+            this.props.addBackground({
+                class: background.id,
+                offset: d.offset
+            });
+        }else{
+            this.props.updateBackground({
+                class: background.id,
+                offset: d.offset,
+            });
+        }
         d.tile = background;
         return d;
     }
@@ -187,6 +208,8 @@ class Grid {
 
     rightClick(d) {
         d3.event.preventDefault();
+        this.props.deleteAsset(d);
+        this.props.deleteBackground(d);
         delete d.tile;
         delete d.asset;
         this.update(d);
@@ -200,7 +223,7 @@ class Grid {
             return item;
         });
 
-        const d3BackgroundElement = d3.select('.hexagon').selectAll('path').data(this.mapBackgrounds(newData),this.indexByID);
+        const d3BackgroundElement = d3.select('.hexagon').selectAll('path').data(newData,this.indexByID);
         this.updateBackground(d3BackgroundElement,this.data);
 
         const d3AssetElement = d3.select('.assets').selectAll('div').data(this.mapAssets(newData),this.indexByID);
@@ -210,6 +233,13 @@ class Grid {
     updateSelected (props) {
         this.props = props;
     };
+
+    cleanGrid () {
+        this.data = spaceData(this.radius, this.width, this.height);
+        this.update({
+            id: ''
+        })
+    }
 
     createGrid () {
 

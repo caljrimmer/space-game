@@ -1,6 +1,6 @@
 body {
     margin:0;
-    background:#000;
+    background:#170117;
     font:normal 11px helvetica;
 }
 
@@ -14,11 +14,7 @@ body {
 
 .layers {
     width:1028px;
-    background-image: -o-linear-gradient(bottom, #2E112E 0%, #361236 50%, #2E112E 100%);
-    background-image: -moz-linear-gradient(bottom, #2E112E 0%, #361236 50%, #2E112E 100%);
-    background-image: -webkit-linear-gradient(bottom, #2E112E 0%, #361236 50%, #2E112E 100%);
-    background-image: -ms-linear-gradient(bottom, #2E112E 0%, #361236 50%, #2E112E 100%);
-    background-image: linear-gradient(to bottom, #2E112E 0%, #361236 50%, #2E112E 100%);
+    background-image: linear-gradient(to bottom, #270727 0%, #581858 50%, #270727 100%);
 }
 
 .overlay {
@@ -48,8 +44,7 @@ body {
 
 .mesh {
     fill: none;
-    stroke: white;
-    stroke-opacity: .1;
+    stroke: #170117;;
     pointer-events: none;
 }
 
@@ -61,7 +56,7 @@ body {
 }
 
 .out-of-bounds {
-    fill:#000;
+    fill:#170117;
 }
 
 .out-of-bounds:hover {
